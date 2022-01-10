@@ -1,20 +1,18 @@
 const express = require('express')
 const app = express()
-
 const axios = require("axios");
-const PORT = process.env.PORT || 5000 // this is very important
-
-app.get('/', function (req, res) {
-    res.send('Hello the World!')
-})
-
-app.use(express.json())
-
+const PORT = process.env.PORT || 5000
 const config = {
     headers : {
         'x-apikey' : '7d35e6b431fed775185712e24ba0faa1597ec'
     }
 }
+
+app.get('/', function (req, res) {
+    res.send('<h1>Welcome to the website !</h1><br><a href="./recipes/get">Get recipes list</a>')
+})
+
+app.use(express.json())
 
 // GET
 app.get('/recipes/get', async function(req, res) {
@@ -57,9 +55,8 @@ app.get('/recipes/get/:id', async function(req, res) {
         })
 })
 
-// PUT
+// PUT/{id}
 app.post('/recipes/put/:id', async function(req, res) {
-    console.log(req.body)
     axios.put('https://deepfriedrecipes-be35.restdb.io/rest/recipes/' + req.params.id, {
         name_recette: req.body.name_recette,
         description_recette: req.body.description_recette,
@@ -88,5 +85,5 @@ app.get('/recipes/delete/:id', async function(req, res) {
 })
 
 app.listen(PORT, function () {
-    console.log('Example app listening on port', PORT)
+    console.log('Server running on the port', PORT)
 })
