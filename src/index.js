@@ -8,10 +8,6 @@ app.get('/', function (req, res) {
     res.send('Hello the World!')
 })
 
-/*app.get('/recipes', function (req, res) {
-    res.send('B̵̛͎̹̮̲̑́̓͑̄͂̂̇̕̕͘Ó̷̡͙͚̻̾̋̈́͒̈́͠Ņ̶̬͎̭̺̞̮̖͈̖̞͚̯͉͇͙͍͒̽͒͛̓̈́̄̉̈́̚N̸̡͈̖̟̠͖̗̟̭̺̠̜̦̽͊̐̏̀̾͐̔̅̈́̂̇͝͝ͅÈ̵̟Ş̸̧̗͔̼͖̪͙̟̱͉̯̭̯͗̈́͝ ̴̢̗̻̦̪̎͋̿̈́̋̔̔̏̎͋͐̉̅́͠ͅR̴̲͊͊͋͊̊̈̂͝͝E̶̝̅͘͠C̸̝̠̞̈̓̎̐͊̈Ẹ̵̡͇̝̦̝͔̦̗̘̝͙̒̏̓͌͂̊͛̀́T̴̛̮̬̥̤͇̠̑̇͑̍͜T̸͇̩̾̀̊̾̈́̂͛̔̓͊͗̑͊͘É̴̝̜͇̫̣̙͉̬͚̹̅̔̒̓̈̽̚ͅS̷̱̤̑̓ ̷̨̛̟̝̖̱̋̂̐̿͑̈̆͗̈́́̚͝͝D̵̜̅̀̃Ę̶͕̠̘̩̍̄̑̂̓̓̍͌̾ ̴̧̗̣͍͉̟̲̉̒̍͐͐̊̌͆͒̚͜Ç̵̼̤͓̦̣̠͕̘͙̻̟͎͓̪͋͆͌̓̋̈́U̴̢̮̘͗̑̈́͗͐͐͝I̷̛͚̹͋̇͒̽̆͗́S̵̢̼͎̯̤͕̗̦̲̮̗̩̪̹̀̽̎̽͑͜͝͝I̶̧̱̣̦͉̞̙̝̞̾̆̎̑̇̅Ṋ̶̨̢̛̯͙͕͓͓̰̪̅̐̊̐̅͑̋͒͊̏̕͘E̷̢̩͙͓͖̮͕͓̥̟̫̲̓̔̈́͊̄́͌̀͆͝S̴͉̀̈͑͆͊̅̾̿̓̑̅͂͑̂̚͘')
-})*/
-
 app.use(express.json())
 
 const config = {
@@ -20,16 +16,77 @@ const config = {
     }
 }
 
-app.get('/recipes', async function(req, res) {
+// GET
+app.get('/recipes/get', async function(req, res) {
     axios.get('https://deepfriedrecipes-be35.restdb.io/rest/recipes', config)
-    .then(results => {
-        res.send(results.data)
-    })
-    .catch(error => {
-        console.log(error)
-    })
+        .then(results => {
+            res.send(results.data)
+        })
+        .catch(error => {
+            console.log(error)
+        })
+})
+
+// POST
+app.post('/recipes/post', async function(req, res) {
+    console.log(req.body)
+    axios.post('https://deepfriedrecipes-be35.restdb.io/rest/recipes', {
+        name_recette: req.body.name_recette,
+        description_recette: req.body.description_recette,
+        ingredients_recette: req.body.ingredients_recette,
+        image_recette: req.body.image_recette,
+        temps_recette: req.body.temps_recette,
+        etapes_recettes: req.body.etapes_recettes
+    }, config)
+        .then(results => {
+            res.send(results.data)
+        })
+        .catch(error => {
+            console.log(error)
+        })
+})
+
+// GET/{id}
+app.get('/recipes/get/:id', async function(req, res) {
+    axios.get('https://deepfriedrecipes-be35.restdb.io/rest/recipes/' + req.params.id, config)
+        .then(results => {
+            res.send(results.data)
+        })
+        .catch(error => {
+            console.log(error)
+        })
+})
+
+// PUT
+app.post('/recipes/put/:id', async function(req, res) {
+    console.log(req.body)
+    axios.put('https://deepfriedrecipes-be35.restdb.io/rest/recipes/' + req.params.id, {
+        name_recette: req.body.name_recette,
+        description_recette: req.body.description_recette,
+        ingredients_recette: req.body.ingredients_recette,
+        image_recette: req.body.image_recette,
+        temps_recette: req.body.temps_recette,
+        etapes_recettes: req.body.etapes_recettes
+    }, config)
+        .then(results => {
+            res.send(results.data)
+        })
+        .catch(error => {
+            console.log(error)
+        })
+})
+
+// DELETE/{id}
+app.get('/recipes/delete/:id', async function(req, res) {
+    axios.delete('https://deepfriedrecipes-be35.restdb.io/rest/recipes/' + req.params.id, config)
+        .then(results => {
+            res.send(results.data)
+        })
+        .catch(error => {
+            console.log(error)
+        })
 })
 
 app.listen(PORT, function () {
-    console.log('Example app listening on port ', PORT)
+    console.log('Example app listening on port', PORT)
 })
