@@ -1,4 +1,5 @@
 const express = require('express')
+const path = require('path')
 const app = express()
 const axios = require("axios");
 const PORT = process.env.PORT || 5000
@@ -8,12 +9,12 @@ const config = {
     }
 }
 
-app.get('/', function (req, res) {
-    res.send('<h1>Welcome to the website !</h1><br><a href="./recipes/get">Get recipes list</a>')
-    //res.sendFile('index.html')
-})
-
 app.use(express.json())
+app.use(express.static(path.join(__dirname, 'public')))
+
+app.get('/', function (req, res) {
+    res.sendFile(__dirname + "/public/html/index.html")
+})
 
 // GET
 app.get('/recipes/get', async function(req, res) {
@@ -86,7 +87,7 @@ app.get('/recipes/delete/:id', async function(req, res) {
 })
 
 app.get("*",(req,res) => {
-    res.sendFile(__dirname + "/404.html")
+    res.sendFile(__dirname + "/public/html/404.html")
 })
 
 app.listen(PORT, function () {
