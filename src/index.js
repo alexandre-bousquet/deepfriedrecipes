@@ -10,6 +10,7 @@ const config = {
 
 app.get('/', function (req, res) {
     res.send('<h1>Welcome to the website !</h1><br><a href="./recipes/get">Get recipes list</a>')
+    //res.sendFile('index.html')
 })
 
 app.use(express.json())
@@ -82,6 +83,10 @@ app.get('/recipes/delete/:id', async function(req, res) {
         .catch(error => {
             console.log(error)
         })
+})
+
+app.get("*",(req,res) => {
+    res.sendFile(__dirname + "/404.html")
 })
 
 app.listen(PORT, function () {
