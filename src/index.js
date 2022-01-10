@@ -30,6 +30,6 @@ app.get('/recipes', async function(req, res) {
     })
 })
 
-app.listen(3000, function () {
+app.listen(PORT, function () {
     console.log('Example app listening on port 3000')
 })
