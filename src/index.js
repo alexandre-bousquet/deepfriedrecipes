@@ -5,6 +5,7 @@ const axios = require("axios")
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
 const passportJWT = require('passport-jwt')
+const cors = require('cors')
 const secret = 'JeNeSaisPasQuoiFairePourLeSecret'
 const ExtractJwt = passportJWT.ExtractJwt
 const JwtStrategy = passportJWT.Strategy
@@ -20,6 +21,7 @@ const jwtOptions = {
 }
 
 app.use(express.json())
+app.use(cors())
 
 async function getUsers(){
     const response = await axios.get('https://deepfriedrecipes-be35.restdb.io/rest/my-users', config)
