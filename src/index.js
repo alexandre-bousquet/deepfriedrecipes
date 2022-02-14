@@ -26,6 +26,11 @@ async function getUsers(){
     return response.data
 }
 
+async function getRecipe(id){
+    const response = await axios.get('https://deepfriedrecipes-be35.restdb.io/rest/recipes/' + id, config)
+    return response.data
+}
+
 passport.use(
     new JwtStrategy(jwtOptions, async function(payload, next) {
         const users = await getUsers()
@@ -58,15 +63,31 @@ app.get('/recipes/get', async function(req, res) {
 })
 
 // POST
-app.post('/recipes/post', async function(req, res) {
-    console.log(req.body)
-    axios.post('https://deepfriedrecipes-be35.restdb.io/rest/recipes', {
-        name_recette: req.body.name_recette,
-        description_recette: req.body.description_recette,
-        ingredients_recette: req.body.ingredients_recette,
-        image_recette: req.body.image_recette,
-        temps_recette: req.body.temps_recette,
-        etapes_recettes: req.body.etapes_recettes
+app.post('/recipes/post', passport.authenticate('jwt',{session:false}), async function(req, res) {
+    if (req.user) {
+        axios.post('https://deepfriedrecipes-be35.restdb.io/rest/recipes', {
+            name_recette: req.body.name_recette,
+            description_recette: req.body.description_recette,
+            ingredients_recette: req.body.ingredients_recette,
+            image_recette: req.body.image_recette,
+            temps_recette: req.body.temps_recette,
+            etapes_recettes: req.body.etapes_recettes,
+            user: req.user
+        }, config)
+            .then(results => {
+                res.send(results.data)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+})
+
+// POST USERS
+app.post('/my-users/post', async function(req, res) {
+    axios.post('https://deepfriedrecipes-be35.restdb.io/rest/my-users', {
+        email: req.body.email,
+        password: req.body.password
     }, config)
         .then(results => {
             res.send(results.data)
@@ -88,32 +109,38 @@ app.get('/recipes/get/:id', async function(req, res) {
 })
 
 // PUT/{id}
-app.post('/recipes/put/:id', async function(req, res) {
-    axios.put('https://deepfriedrecipes-be35.restdb.io/rest/recipes/' + req.params.id, {
-        name_recette: req.body.name_recette,
-        description_recette: req.body.description_recette,
-        ingredients_recette: req.body.ingredients_recette,
-        image_recette: req.body.image_recette,
-        temps_recette: req.body.temps_recette,
-        etapes_recettes: req.body.etapes_recettes
-    }, config)
-        .then(results => {
-            res.send(results.data)
-        })
-        .catch(error => {
-            console.log(error)
-        })
+app.post('/recipes/put/:id', passport.authenticate('jwt',{session:false}), async function(req, res) {
+    const recipe = await getRecipe(req.params.id)
+    if (req.user && req.user._id === recipe.user[0]._id) {
+        axios.put('https://deepfriedrecipes-be35.restdb.io/rest/recipes/' + req.params.id, {
+            name_recette: req.body.name_recette,
+            description_recette: req.body.description_recette,
+            ingredients_recette: req.body.ingredients_recette,
+            image_recette: req.body.image_recette,
+            temps_recette: req.body.temps_recette,
+            etapes_recettes: req.body.etapes_recettes
+        }, config)
+            .then(results => {
+                res.send(results.data)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
 })
 
 // DELETE/{id}
-app.get('/recipes/delete/:id', async function(req, res) {
-    axios.delete('https://deepfriedrecipes-be35.restdb.io/rest/recipes/' + req.params.id, config)
-        .then(results => {
-            res.send(results.data)
-        })
-        .catch(error => {
-            console.log(error)
-        })
+app.get('/recipes/delete/:id', passport.authenticate('jwt',{session:false}), async function(req, res) {
+    const recipe = await getRecipe(req.params.id)
+    if (req.user && req.user._id === recipe.user[0]._id) {
+        axios.delete('https://deepfriedrecipes-be35.restdb.io/rest/recipes/' + req.params.id, config)
+            .then(results => {
+                res.send(results.data)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
 })
 
 app.get("*",(req,res) => {
