@@ -1,12 +1,8 @@
 const axios = require("axios")
-const config = {
-    headers : {
-        'x-apikey' : '7d35e6b431fed775185712e24ba0faa1597ec'
-    }
-}
+const settings = require("../settings.js")
 
 function getAllRecipes(req, res) {
-    axios.get('https://deepfriedrecipes-be35.restdb.io/rest/recipes', config)
+    axios.get('https://deepfriedrecipes-be35.restdb.io/rest/recipes', settings.config)
         .then(results => {
             res.send(results.data)
         })
@@ -16,7 +12,7 @@ function getAllRecipes(req, res) {
 }
 
 function getRecipe(req, res) {
-    axios.get('https://deepfriedrecipes-be35.restdb.io/rest/recipes/' + req.params.id, config)
+    axios.get('https://deepfriedrecipes-be35.restdb.io/rest/recipes/' + req.params.id, settings.config)
         .then(results => {
             res.send(results.data)
         })
@@ -25,8 +21,8 @@ function getRecipe(req, res) {
         })
 }
 
-async function getRecipeWithReturn(id){
-    const response = await axios.get('https://deepfriedrecipes-be35.restdb.io/rest/recipes/' + id, config)
+async function getRecipeWithReturn(id) {
+    const response = await axios.get('https://deepfriedrecipes-be35.restdb.io/rest/recipes/' + id, settings.config)
     return response.data
 }
 
@@ -39,7 +35,7 @@ function createRecipe(req, res) {
         temps_recette: req.body.temps_recette,
         etapes_recettes: req.body.etapes_recettes,
         user: req.user
-    }, config)
+    }, settings.config)
         .then(results => {
             res.send(results.data)
         })
@@ -56,7 +52,7 @@ function editRecipe(req, res) {
         image_recette: req.body.image_recette,
         temps_recette: req.body.temps_recette,
         etapes_recettes: req.body.etapes_recettes
-    }, config)
+    }, settings.config)
         .then(results => {
             res.send(results.data)
         })
@@ -66,7 +62,7 @@ function editRecipe(req, res) {
 }
 
 function deleteRecipe(req, res) {
-    axios.delete('https://deepfriedrecipes-be35.restdb.io/rest/recipes/' + req.params.id, config)
+    axios.delete('https://deepfriedrecipes-be35.restdb.io/rest/recipes/' + req.params.id, settings.config)
         .then(results => {
             res.send(results.data)
         })
