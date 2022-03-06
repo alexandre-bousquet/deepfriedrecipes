@@ -30,17 +30,28 @@ async function getUsers() {
     return response.data
 }
 
-function createUser(req, res) {
-    axios.post('https://deepfriedrecipes-be35.restdb.io/rest/my-users', {
-        email: req.body.email,
-        password: req.body.password
-    }, settings.config)
-        .then(results => {
-            res.send(results.data)
-        })
-        .catch(error => {
-            console.log(error)
-        })
+async function createUser(req, res) {
+    const users = await getUsers()
+    const user = users.find(user => user.email === req.body.email)
+
+    if (!user) {
+        axios.post('https://deepfriedrecipes-be35.restdb.io/rest/my-users', {
+            email: req.body.email,
+            password: req.body.password,
+            firstname: req.body.firstname,
+            lastname: req.body.lastname
+        }, settings.config)
+            .then(results => {
+                res.send(results.data)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+
+    } else {
+        res.status(401).json({error: 'Email already taken'})
+        return
+    }
 }
 
 async function login(req, res) {
