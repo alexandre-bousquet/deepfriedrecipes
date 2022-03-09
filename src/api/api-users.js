@@ -47,10 +47,8 @@ async function createUser(req, res) {
             .catch(error => {
                 console.log(error)
             })
-
     } else {
         res.status(401).json({error: 'Email already taken'})
-        return
     }
 }
 
@@ -74,8 +72,8 @@ async function login(req, res) {
     const userJwt = jwt.sign({email: user.email}, secret)
 
     res.json({
-        jwt: userJwt,
         user: {
+            jwt: userJwt,
             email: user.email,
             firstname: user.firstname,
             lastname: user.lastname
