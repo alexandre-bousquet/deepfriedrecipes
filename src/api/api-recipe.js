@@ -49,7 +49,6 @@ function editRecipe(req, res) {
         name_recette: req.body.name_recette,
         description_recette: req.body.description_recette,
         ingredients_recette: req.body.ingredients_recette,
-        image_recette: req.body.image_recette,
         temps_recette: req.body.temps_recette,
         etapes_recettes: req.body.etapes_recettes
     }, settings.config)
