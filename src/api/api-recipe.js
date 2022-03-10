@@ -1,8 +1,9 @@
 const axios = require("axios")
 const settings = require("../settings.js")
+const url = settings.apiUrl + '/recipes'
 
 function getAllRecipes(req, res) {
-    axios.get('https://deepfriedrecipes-be35.restdb.io/rest/recipes', settings.config)
+    axios.get(url, settings.config)
         .then(results => {
             res.send(results.data)
         })
@@ -12,7 +13,7 @@ function getAllRecipes(req, res) {
 }
 
 function getRecipe(req, res) {
-    axios.get('https://deepfriedrecipes-be35.restdb.io/rest/recipes/' + req.params.id, settings.config)
+    axios.get(url + '/' + req.params.id, settings.config)
         .then(results => {
             res.send(results.data)
         })
@@ -22,12 +23,12 @@ function getRecipe(req, res) {
 }
 
 async function getRecipeWithReturn(id) {
-    const response = await axios.get('https://deepfriedrecipes-be35.restdb.io/rest/recipes/' + id, settings.config)
+    const response = await axios.get(url + '/' + id, settings.config)
     return response.data
 }
 
 function createRecipe(req, res) {
-    axios.post('https://deepfriedrecipes-be35.restdb.io/rest/recipes', {
+    axios.post(url, {
         name_recette: req.body.name_recette,
         description_recette: req.body.description_recette,
         ingredients_recette: req.body.ingredients_recette,
@@ -45,7 +46,7 @@ function createRecipe(req, res) {
 }
 
 function editRecipe(req, res) {
-    axios.put('https://deepfriedrecipes-be35.restdb.io/rest/recipes/' + req.params.id, {
+    axios.put(url + '/' + req.params.id, {
         name_recette: req.body.name_recette,
         description_recette: req.body.description_recette,
         ingredients_recette: req.body.ingredients_recette,
@@ -61,7 +62,7 @@ function editRecipe(req, res) {
 }
 
 function deleteRecipe(req, res) {
-    axios.delete('https://deepfriedrecipes-be35.restdb.io/rest/recipes/' + req.params.id, settings.config)
+    axios.delete(url + '/' + req.params.id, settings.config)
         .then(results => {
             res.send(results.data)
         })

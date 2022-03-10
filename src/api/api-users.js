@@ -6,6 +6,7 @@ const passportJWT = require('passport-jwt')
 const ExtractJwt = passportJWT.ExtractJwt
 const JwtStrategy = passportJWT.Strategy
 const settings = require("../settings.js")
+const url = settings.apiUrl + '/my-users'
 
 const jwtOptions = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -26,7 +27,7 @@ passport.use(
 )
 
 async function getUsers() {
-    const response = await axios.get('https://deepfriedrecipes-be35.restdb.io/rest/my-users', settings.config)
+    const response = await axios.get(url, settings.config)
     return response.data
 }
 
@@ -35,7 +36,7 @@ async function createUser(req, res) {
     const user = users.find(user => user.email === req.body.email)
 
     if (!user) {
-        axios.post('https://deepfriedrecipes-be35.restdb.io/rest/my-users', {
+        axios.post(url, {
             email: req.body.email,
             password: req.body.password,
             firstname: req.body.firstname,
