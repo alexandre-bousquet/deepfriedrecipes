@@ -6,7 +6,7 @@ const passportJWT = require('passport-jwt')
 const ExtractJwt = passportJWT.ExtractJwt
 const JwtStrategy = passportJWT.Strategy
 const settings = require("../settings.js")
-const url = settings.apiUrl + '/my-users'
+const url = settings.apiUrl.concat('/my-users')
 
 const jwtOptions = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

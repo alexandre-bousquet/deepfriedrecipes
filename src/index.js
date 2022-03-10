@@ -14,12 +14,19 @@ app.use(passport.initialize())
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.get('/', function (req, res) {
-    res.sendFile(__dirname + "/public/html/index.html")
+    res.sendFile(__dirname.concat("/public/html/index.html"))
+})
+
+app.get('/doc', function (req, res) {
+    res.sendFile(__dirname.concat("/public/html/redoc-static.html"))
 })
 
 // GET
-app.get('/recipes/get', async function (req, res) {
-    recipe.getAllRecipes(req, res)
+app.get('/recipes/get', passport.authenticate('jwt', {session: false}), async function (req, res) {
+    if (req.user) {
+        console.log("here")
+        recipe.getAllRecipes(req, res)
+    }
 })
 
 // POST
@@ -56,7 +63,7 @@ app.get('/recipes/delete/:id', passport.authenticate('jwt', {session: false}), a
 })
 
 app.get("*", (req, res) => {
-    res.sendFile(__dirname + "/public/html/404.html")
+    res.sendFile(__dirname.concat("/public/html/404.html"))
 })
 
 // POST/LOGIN

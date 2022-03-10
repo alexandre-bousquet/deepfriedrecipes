@@ -12,7 +12,8 @@
     "express": "^4.17.2",
     "jsonwebtoken": "^8.5.1",
     "passport": "^0.5.2",
-    "passport-jwt": "^4.0.0"
+    "passport-jwt": "^4.0.0",
+    "redoc": "^2.0.0-rc.64"
   },
   "description": "Link to the Heroku : https://deepfriedrecipes.herokuapp.com",
   "repository": {

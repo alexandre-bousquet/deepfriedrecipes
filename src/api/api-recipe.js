@@ -1,8 +1,9 @@
 const axios = require("axios")
 const settings = require("../settings.js")
-const url = settings.apiUrl + '/recipes'
+const url = settings.apiUrl.concat('/recipes')
 
 function getAllRecipes(req, res) {
+    console.log("here2")
     axios.get(url, settings.config)
         .then(results => {
             res.send(results.data)
@@ -13,7 +14,7 @@ function getAllRecipes(req, res) {
 }
 
 function getRecipe(req, res) {
-    axios.get(url + '/' + req.params.id, settings.config)
+    axios.get(url.concat('/', req.params.id), settings.config)
         .then(results => {
             res.send(results.data)
         })
@@ -23,7 +24,7 @@ function getRecipe(req, res) {
 }
 
 async function getRecipeWithReturn(id) {
-    const response = await axios.get(url + '/' + id, settings.config)
+    const response = await axios.get(url.concat('/', id), settings.config)
     return response.data
 }
 
@@ -46,7 +47,7 @@ function createRecipe(req, res) {
 }
 
 function editRecipe(req, res) {
-    axios.put(url + '/' + req.params.id, {
+    axios.put(url.concat('/', req.params.id), {
         name_recette: req.body.name_recette,
         description_recette: req.body.description_recette,
         ingredients_recette: req.body.ingredients_recette,
@@ -62,7 +63,7 @@ function editRecipe(req, res) {
 }
 
 function deleteRecipe(req, res) {
-    axios.delete(url + '/' + req.params.id, settings.config)
+    axios.delete(url.concat('/', req.params.id), settings.config)
         .then(results => {
             res.send(results.data)
         })
