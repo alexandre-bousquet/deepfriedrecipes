@@ -9,12 +9,12 @@ const settings = require("./settings.js")
 
 app.use(express.json())
 app.use(cors())
-
 app.use(passport.initialize())
 app.use(express.static(path.join(__dirname, 'public')))
 
 // GET
 app.get('/recipes/get', passport.authenticate('jwt', {session: false}), async function (req, res) {
+    // Check if the user is log in to allow him to get all the recipes of the website
     if (req.user) {
         recipe.getAllRecipes(req, res)
     }
@@ -22,6 +22,7 @@ app.get('/recipes/get', passport.authenticate('jwt', {session: false}), async fu
 
 // POST
 app.post('/recipes/post', passport.authenticate('jwt', {session: false}), async function (req, res) {
+    // Check if the user is log in to allow him to create a new recipe
     if (req.user) {
         recipe.createRecipe(req, res)
     }
@@ -29,6 +30,7 @@ app.post('/recipes/post', passport.authenticate('jwt', {session: false}), async 
 
 // GET/{id}
 app.get('/recipes/get/:id', passport.authenticate('jwt', {session: false}), async function (req, res) {
+    // Check if the user is log in to allow him to get a recipe
     if (req.user) {
         recipe.getRecipe(req, res)
     }
@@ -36,6 +38,7 @@ app.get('/recipes/get/:id', passport.authenticate('jwt', {session: false}), asyn
 
 // PUT/{id}
 app.post('/recipes/put/:id', passport.authenticate('jwt', {session: false}), async function (req, res) {
+    // Check if the user is log in and if he created the recipe to allow him to edit it
     const recette = await recipe.getRecipeWithReturn(req.params.id)
     if (req.user && req.user._id === recette.user[0]._id) {
         recipe.editRecipe(req, res)
@@ -44,6 +47,7 @@ app.post('/recipes/put/:id', passport.authenticate('jwt', {session: false}), asy
 
 // DELETE/{id}
 app.get('/recipes/delete/:id', passport.authenticate('jwt', {session: false}), async function (req, res) {
+    // Check if the user is log in and if he created the recipe to allow him to delete it
     const recette = await recipe.getRecipeWithReturn(req.params.id)
     if (req.user && req.user._id === recette.user[0]._id) {
         recipe.deleteRecipe(req, res)
@@ -52,11 +56,13 @@ app.get('/recipes/delete/:id', passport.authenticate('jwt', {session: false}), a
 
 // POST
 app.post('/my-users/post', async function (req, res) {
+    // Allow a visitor to create an account to log in to
     users.createUser(req, res)
 })
 
 // POST/LOGIN
 app.post('/login', async (req, res) => {
+    // Allow a user to log in and get his informations (and a JWT)
     await users.login(req, res)
 })
 
@@ -67,11 +73,13 @@ app.get('/', function (req, res) {
 
 // API Rest doc page
 app.get('/doc', function (req, res) {
+    // Display the API REST documentation page made with Redoc
     res.sendFile(__dirname.concat("/public/html/redoc-static.html"))
 })
 
 // Error page
 app.get("*", (req, res) => {
+    // Display the custom error 404 page
     res.sendFile(__dirname.concat("/public/html/404.html"))
 })
 

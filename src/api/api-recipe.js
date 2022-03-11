@@ -22,6 +22,11 @@ function getRecipe(req, res) {
         })
 }
 
+/**
+ * Get the data of the recipe which has its id in parameter
+ * @param id {string} - Recipe ID
+ * @returns {Promise<any>} - Data on the recipe
+ */
 async function getRecipeWithReturn(id) {
     const response = await axios.get(url.concat('/', id), settings.config)
     return response.data
