@@ -13,18 +13,9 @@ app.use(cors())
 app.use(passport.initialize())
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.get('/', function (req, res) {
-    res.sendFile(__dirname.concat("/public/html/index.html"))
-})
-
-app.get('/doc', function (req, res) {
-    res.sendFile(__dirname.concat("/public/html/redoc-static.html"))
-})
-
 // GET
 app.get('/recipes/get', passport.authenticate('jwt', {session: false}), async function (req, res) {
     if (req.user) {
-        console.log("here")
         recipe.getAllRecipes(req, res)
     }
 })
@@ -36,14 +27,11 @@ app.post('/recipes/post', passport.authenticate('jwt', {session: false}), async 
     }
 })
 
-// POST
-app.post('/my-users/post', async function (req, res) {
-    users.createUser(req, res)
-})
-
 // GET/{id}
-app.get('/recipes/get/:id', async function (req, res) {
-    recipe.getRecipe(req, res)
+app.get('/recipes/get/:id', passport.authenticate('jwt', {session: false}), async function (req, res) {
+    if (req.user) {
+        recipe.getRecipe(req, res)
+    }
 })
 
 // PUT/{id}
@@ -62,13 +50,29 @@ app.get('/recipes/delete/:id', passport.authenticate('jwt', {session: false}), a
     }
 })
 
-app.get("*", (req, res) => {
-    res.sendFile(__dirname.concat("/public/html/404.html"))
+// POST
+app.post('/my-users/post', async function (req, res) {
+    users.createUser(req, res)
 })
 
 // POST/LOGIN
 app.post('/login', async (req, res) => {
     await users.login(req, res)
+})
+
+// Homepage
+app.get('/', function (req, res) {
+    res.sendFile(__dirname.concat("/public/html/index.html"))
+})
+
+// API Rest doc page
+app.get('/doc', function (req, res) {
+    res.sendFile(__dirname.concat("/public/html/redoc-static.html"))
+})
+
+// Error page
+app.get("*", (req, res) => {
+    res.sendFile(__dirname.concat("/public/html/404.html"))
 })
 
 app.listen(settings.port, function () {

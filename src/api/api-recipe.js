@@ -3,7 +3,6 @@ const settings = require("../settings.js")
 const url = settings.apiUrl.concat('/recipes')
 
 function getAllRecipes(req, res) {
-    console.log("here2")
     axios.get(url, settings.config)
         .then(results => {
             res.send(results.data)
