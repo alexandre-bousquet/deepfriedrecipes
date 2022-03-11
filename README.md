@@ -1,10 +1,24 @@
 # Deep Fried Recipes
+A Node.js back-end server with Restdb as database.
 
-<a href="https://deepfriedrecipes.herokuapp.com">Link to the website</a>
+Made by Alexandre BOUSQUET and Hamza IKIOU, two students of the professional licence APIDAE.
+
+## Links
+<a href="https://deepfriedrecipes.herokuapp.com">Link to the Node.js server</a>
+
+<a href="https://deepfriedrecipes.herokuapp.com/doc">Link to API Rest documentation</a>
+
+<a href="https://deepfriedrecipes.netlify.app">Link to the Deep Fried Recipes website (with the front-end)</a>
+
 ## Features
+
 ######TODO
 
 ## Routes
+
+All the routes of this API.
+
+### Recipes
 
 ```js
 // Get all the recipes
@@ -31,10 +45,22 @@
 "https://deepfriedrecipes.herokuapp.com/recipes/put/:id"
 ```
 
+### Users
+
+```js
+// Create a user with the attributes in the body request
+"https://deepfriedrecipes.herokuapp.com/my-users/post"
+```
+
+```js
+// Log in a user and give him a JWT to do other request
+"https://deepfriedrecipes.herokuapp.com/login"
+```
+
 ## Run
 
 ``` bash
-# Install or update all the dependencies in package.json
+# Install the dependencies in package.json
 npm install
 
 # Run the server on default port (5000)
