@@ -35,6 +35,16 @@ async function getUsers() {
 }
 
 /**
+ * Get the user in the users list by email if it exist
+ * @param email {string} - Email of the user searched
+ * @returns {Promise<*>} - Data of the user researched
+ */
+async function getUser(email) {
+    const users = await getUsers()
+    return users.find(user => user.email === email)
+}
+
+/**
  * Create a new account if the email isn't already used
  * @param req {Object} - Request made by a visitor
  * @param res {Object} - Response of the server
@@ -42,10 +52,7 @@ async function getUsers() {
  */
 async function createUser(req, res) {
     // Check if a user with this email already exist or not
-    const users = await getUsers()
-    const user = users.find(user => user.email === req.body.email)
-
-    if (!user) {
+    if (!await getUser(req.body.email)) {
         axios.post(url, {
             email: req.body.email,
             password: req.body.password,
@@ -64,6 +71,34 @@ async function createUser(req, res) {
 }
 
 /**
+ * Edit an user with the data in the request
+ * @param req {Object} - Request made by a user
+ * @param res {Object} - Response of the server
+ */
+function editUser(req, res) {
+    const passwordRequest = req.body.password
+    let passwordUser = getUser(req.body.email).password
+
+    // Check if a new password has been sent
+    if (passwordRequest !== null && passwordRequest !== passwordUser) {
+        passwordUser = passwordRequest
+    }
+
+    axios.put(url.concat('/', req.params.id), {
+        email: req.body.email,
+        password: passwordUser,
+        firstname: req.body.firstname,
+        lastname: req.body.lastname
+    }, settings.config)
+        .then(results => {
+            res.send(results.data)
+        })
+        .catch(error => {
+            console.log(error)
+        })
+}
+
+/**
  * Log in a user if the email and password he sent are corrects
  * @param req {Object} - Request made by a visitor with and email and a password in the body
  * @param res {Object} - Response of the server
@@ -78,8 +113,7 @@ async function login(req, res) {
     }
 
     // Check if the user exist and if the password in the database is the same that the one he sent
-    const users = await getUsers()
-    const user = users.find(user => user.email === email)
+    const user = await getUser(email)
     if (!user || user.password !== password) {
         res.status(401).json({error: 'Email / password do not match.'})
     }

@@ -12,6 +12,11 @@ function getAllRecipes(req, res) {
         })
 }
 
+/**
+ * Get the recipe which has its id in url
+ * @param req {Object} - Request made by a user
+ * @param res {Object} - Response of the server
+ */
 function getRecipe(req, res) {
     axios.get(url.concat('/', req.params.id), settings.config)
         .then(results => {
@@ -23,7 +28,7 @@ function getRecipe(req, res) {
 }
 
 /**
- * Get the data of the recipe which has its id in parameter
+ * Get the data of the recipe which has its id in parameter in the request
  * @param id {string} - Recipe ID
  * @returns {Promise<any>} - Data on the recipe
  */
@@ -32,6 +37,11 @@ async function getRecipeWithReturn(id) {
     return response.data
 }
 
+/**
+ * Create a new recipe with the data in the request
+ * @param req {Object} - Request made by a user
+ * @param res {Object} - Response of the server
+ */
 function createRecipe(req, res) {
     axios.post(url, {
         name_recette: req.body.name_recette,
@@ -50,6 +60,11 @@ function createRecipe(req, res) {
         })
 }
 
+/**
+ * Edit a recipe with the data in the request
+ * @param req {Object} - Request made by a user
+ * @param res {Object} - Response of the server
+ */
 function editRecipe(req, res) {
     axios.put(url.concat('/', req.params.id), {
         name_recette: req.body.name_recette,
@@ -66,6 +81,11 @@ function editRecipe(req, res) {
         })
 }
 
+/**
+ * Delete the recipe which has its id in parameter in the request
+ * @param req {Object} - Request made by a user
+ * @param res {Object} - Response of the server
+ */
 function deleteRecipe(req, res) {
     axios.delete(url.concat('/', req.params.id), settings.config)
         .then(results => {

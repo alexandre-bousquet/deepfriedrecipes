@@ -66,6 +66,12 @@ app.post('/login', async (req, res) => {
     await users.login(req, res)
 })
 
+// PUT/{id}
+app.post('/my-users/put/:id', async (req, res) => {
+    // Allow a user to log in and get his informations (and a JWT)
+    await users.login(req, res)
+})
+
 // Homepage
 app.get('/', function (req, res) {
     res.sendFile(__dirname.concat("/public/html/index.html"))
