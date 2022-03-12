@@ -61,15 +61,17 @@ app.post('/my-users/post', async function (req, res) {
 })
 
 // POST/LOGIN
-app.post('/login', async (req, res) => {
+app.post('/login', passport.authenticate('jwt', {session: false}), async (req, res) => {
     // Allow a user to log in and get his informations (and a JWT)
     await users.login(req, res)
 })
 
 // PUT/{id}
 app.post('/my-users/put/:id', async (req, res) => {
-    // Allow a user to log in and get his informations (and a JWT)
-    await users.login(req, res)
+    // Allow a user to edit his informations
+    if (req.user && req.user.email === req.form.email) {
+        await users.editUser(req, res)
+    }
 })
 
 // Homepage

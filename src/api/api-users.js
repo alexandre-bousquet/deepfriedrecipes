@@ -135,5 +135,6 @@ async function login(req, res) {
 
 module.exports = {
     createUser: createUser,
-    login: login
+    login: login,
+    editUser: editUser
 }
