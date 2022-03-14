@@ -12,7 +12,17 @@ Made by Alexandre BOUSQUET and Hamza IKIOU, two students of the professional lic
 
 ## Features
 
-######TODO
+- users
+    - create an user
+    - login and get a JWT token
+    - edit profile
+  
+
+- recipes
+    - **C**reate recipe
+    - **R**ead recipe (one or all)
+    - **U**pdate a recipe
+    - **D**elete a recipe
 
 ## Routes
 
@@ -32,7 +42,7 @@ All the routes of this API.
 
 ```js
 // Create the recipe with the attributes in the body request
-"https://deepfriedrecipes.herokuapp.com/recipes/put"
+"https://deepfriedrecipes.herokuapp.com/recipes/post"
 ```
 
 ```js
@@ -48,13 +58,18 @@ All the routes of this API.
 ### Users
 
 ```js
-// Create a user with the attributes in the body request
+// Create an user with the attributes in the body request
 "https://deepfriedrecipes.herokuapp.com/my-users/post"
 ```
 
 ```js
-// Log in a user and give him a JWT to do other request
+// Log in an user and give him a JWT to do other request
 "https://deepfriedrecipes.herokuapp.com/login"
+```
+
+```js
+// Update an user with the attributes in the body request
+"https://deepfriedrecipes.herokuapp.com/my-users/put/:id"
 ```
 
 ## Run
