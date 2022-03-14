@@ -124,6 +124,7 @@ async function login(req, res) {
     // Put in the response the user's data and the JWT created
     res.json({
         user: {
+            _id: user._id,
             jwt: userJwt,
             email: user.email,
             firstname: user.firstname,
