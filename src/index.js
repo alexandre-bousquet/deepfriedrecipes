@@ -61,7 +61,7 @@ app.post('/my-users/post', async function (req, res) {
 })
 
 // POST/LOGIN
-app.post('/login', passport.authenticate('jwt', {session: false}), async (req, res) => {
+app.post('/login', async (req, res) => {
     // Allow a user to log in and get his informations (and a JWT)
     await users.login(req, res)
 })
