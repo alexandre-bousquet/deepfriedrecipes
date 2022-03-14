@@ -67,7 +67,7 @@ app.post('/login', async (req, res) => {
 })
 
 // PUT/{id}
-app.post('/my-users/put/:id', async (req, res) => {
+app.post('/my-users/put/:id', passport.authenticate('jwt', {session: false}), async (req, res) => {
     // Allow a user to edit his informations
     if (req.user && req.user.email === req.form.email) {
         await users.editUser(req, res)
