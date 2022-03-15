@@ -117,20 +117,21 @@ async function login(req, res) {
     const user = await getUser(email)
     if (!user || user.password !== password) {
         res.status(401).json({error: 'Email / password do not match.'})
+    } else {
+        // Create a JWT for the user
+        const userJwt = jwt.sign({email: user.email}, secret)
+
+        // Put in the response the user's data and the JWT created
+        res.json({
+            user: {
+                _id: user._id,
+                jwt: userJwt,
+                email: user.email,
+                firstname: user.firstname,
+                lastname: user.lastname
+            }
+        })
     }
-
-    // Create a JWT for the user
-    const userJwt = jwt.sign({email: user.email}, secret)
-
-    // Put in the response the user's data and the JWT created
-    res.json({
-        user: {
-            jwt: userJwt,
-            email: user.email,
-            firstname: user.firstname,
-            lastname: user.lastname
-        }
-    })
 
 }
 
