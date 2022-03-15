@@ -108,6 +108,7 @@ async function login(req, res) {
     // Check if an email and a password has been sent in the request
     const email = req.body.email
     const password = req.body.password
+    console.log(req)
     if (!email || !password) {
         res.status(401).json({error: 'Email or password was not provided.'})
     }
